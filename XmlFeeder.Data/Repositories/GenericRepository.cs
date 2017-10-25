@@ -1,0 +1,79 @@
+﻿namespace XmlFeeder.Data.Repositories
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+
+    public class GenericRepository<T> : IRepository<T> where T : class
+    {
+        protected DbContext context;
+        private IDbSet<T> set;
+
+        public GenericRepository(IXmlFeederContext context)
+        {
+            this.context = context as DbContext;
+            this.set = this.context.Set<T>();
+        }
+
+        public IDbSet<T> Set
+        {
+            get { return this.set; }
+        }
+
+        public System.Linq.IQueryable<T> All()
+        {
+            return this.set;
+        }
+
+        public T Find(object id)
+        {
+            return this.set.Find(id);
+        }
+
+        public void Add(T entity)
+        {
+            this.ChangeState(entity, EntityState.Added);
+        }
+
+        public void Update(T entity)
+        {
+            this.ChangeState(entity, EntityState.Modified);
+        }
+
+        public void Delete(T entity)
+        {
+            this.ChangeState(entity, EntityState.Deleted);
+        }
+
+        public T Delete(object id)
+        {
+            var entity = this.Find(id);
+            this.Delete(entity);
+            return entity;
+        }
+
+        public void BulkMerge(IEnumerable<T> entities)
+        {
+            try
+            {
+                this.context.BulkMerge(entities);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        private void ChangeState(T entity, EntityState state)
+        {
+            var entry = this.context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                this.set.Attach(entity);
+            }
+
+            entry.State = state;
+        }
+    }
+}
