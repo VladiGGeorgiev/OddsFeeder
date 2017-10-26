@@ -6,5 +6,7 @@
     public interface IMapper
     {
         DataModel MapXmlSportsToDataModels(List<Sport> sports);
+
+        MatchModel MapMatchToMatchViewModel(XmlFeeder.Models.Match match);
     }
 }

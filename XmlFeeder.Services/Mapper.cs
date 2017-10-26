@@ -63,8 +63,8 @@
             {
                 Id = x.Odd.ID,
                 Name = x.Odd.Name,
-                Value = x.Odd.TheValue,
-                //SpecialBetValue = x.Odd.SpecialBetValue
+                Value = x.Odd.Value,
+                SpecialBetValue = x.Odd.SpecialBetValue,
                 BetId = x.BetId
             });
 
@@ -76,6 +76,31 @@
                 Events = eventsList,
                 Bets = betsList,
                 Odds = oddsList
+            };
+        }
+
+
+        public MatchModel MapMatchToMatchViewModel(XmlFeeder.Models.Match match)
+        {
+            return new MatchModel
+            {
+                Id = match.Id,
+                Name = match.Name,
+                StartDate = match.StartDate,
+                MatchType = match.MatchType,
+                Bets = match.Bets.Select(bet => new BetModel
+                {
+                    Id = bet.Id,
+                    Name = bet.Name,
+                    IsLive = bet.IsLive,
+                    Odds = bet.Odds.Select(odd => new OddModel
+                    {
+                        Id = odd.Id,
+                        Name = odd.Name,
+                        Value = odd.Value,
+                        SpecialBetValue = odd.SpecialBetValue
+                    })
+                })
             };
         }
     }
