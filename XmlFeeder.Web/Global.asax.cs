@@ -20,10 +20,7 @@
     }
 }
 
-// 1. Fix XML decimal in Odds. 1.1. Try to add big XML in DB. (Deserialize XML, map to db objects, save in DB) XmlReader 
-// 2. Create DB on app start
-
-// Questions:
-// 1. Which time zone is the times returned by the API
+// 1. Create DB on app start
 // 2. Should I display all of the information in the database, or only matches.
 // 3. I can add templating engine in JavaScript for better quality.
+// 4. Move xml deserialization in class

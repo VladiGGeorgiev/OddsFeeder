@@ -1,42 +1,43 @@
 ﻿namespace XmlFeeder.Web
 {
-    using Microsoft.AspNet.SignalR;
     using Quartz;
     using System.Linq;
-    using XmlFeeder.Data.Repositories;
     using XmlFeeder.Services;
+    using XmlFeeder.Services.Models;
     using XmlFeeder.Web.Hubs;
-    using XmlFeeder.Web.ViewModels;
 
     public class FeederJob : IJob
     {
         private readonly IXmlFeederRequester requester;
         private readonly ISportsDataPopulationService populationService;
         private readonly IMapper mapper;
-        private readonly IMatchesRepository matchesRepository;
+        private readonly ISportsService sportsService;
+        private readonly IXmlFeederSerializer serializer;
 
         public FeederJob(
             IXmlFeederRequester requester, 
             ISportsDataPopulationService populationService,
             IMapper mapper,
-            IMatchesRepository matchesRepository)
+            ISportsService sportsService,
+            IXmlFeederSerializer serializer)
         {
             this.requester = requester;
             this.populationService = populationService;
             this.mapper = mapper;
-            this.matchesRepository = matchesRepository;
+            this.sportsService = sportsService;
+            this.serializer = serializer;
         }
 
         public void Execute(IJobExecutionContext context)
         {
-            var xmlFeed = this.requester.GetFeed();
-            var sportsData = this.mapper.MapXmlSportsToDataModels(xmlFeed.Sports);
+            var xmlFeedString = this.requester.GetFeed();
+            var xmlSports = this.serializer.Deserialize(xmlFeedString);
+            var sportsData = this.mapper.MapXmlSportsToDataModels(xmlSports.Sports.ToList());
             populationService.PupulateData(sportsData);
 
-            var matches = this.matchesRepository.GetAvailableMatches();
-            var matchesVM = matches.Select(MatchViewModel.ToModel);
+            var sportsModel = new SportsModel { Sports = this.sportsService.GetAllSports() };
             // TODO: Think about FeedHubServer class
-            FeedHub.Update(matchesVM);
+            FeedHub.Update(sportsModel);
         }
     }
 }
