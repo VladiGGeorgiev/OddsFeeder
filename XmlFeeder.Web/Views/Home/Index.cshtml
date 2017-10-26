@@ -2,45 +2,99 @@
     ViewBag.Title = "Home Page";
 }
 
-<div id="box">
+<div id="feed">
 </div>
 
 @section scripts {
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>    
     <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/mustache.js"></script>
     <script>
         $(function () {
+            Mustache.Formatters = {
+                date: function (str) {
+                    var dt = new Date(parseInt(str.substr(6, str.length - 8), 10));
+                    return (dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear());
+                }
+            };
+
             var feedHub = $.connection.feedHub;
 
-            feedHub.client.updateFeed = function (matches) {
-                console.log(matches);
+            var feedElement = $('#feed');
+            feedHub.client.updateFeed = function (sports) {
+                console.log(sports);
 
-                var data = sessionStorage.getItem('matches');
+                var data = sessionStorage.getItem('sports');
                 if (data) {
                     // Compare matches
                 } else {
-                    sessionStorage.setItem('matches', matches);
+                    sessionStorage.setItem('sports', sports);
                 }
 
-                var list = '';
-                for (var i = 0; i < matches.length; i++) {
-                    list += '<div class="panel panel-default"><div class="panel-heading">' +
-                        matches[i].Name + '(' + matches[i].MatchType +
-                        ')</div><div class="panel-body">' + new Date(matches[i].StartDate).toLocaleString() + '</div></div>';
-                }
+                feedElement.html('');
+                var template = $('#feedTemplate').html();
+                feedHtml = Mustache.render(template, sports);
+                feedElement.html(feedHtml);
 
-
-
-                // New matches should be added
-                // Remove matches that not start..
-
-                $('#box').append(list);
+                //var list = '';
+                //for (var i = 0; i < sports.length; i++) {
+                //    list += '<div class="panel panel-default"><div class="panel-heading">' +
+                //        sports[i].Name + '</div><div class="panel-body"></div></div>';
+                //}
+                
+                //feedElement.append(list);
             }
 
             $.connection.hub.start().done(function () {
-                //feedHub.server.updateFeed('HellloooooO!');
+                $.ajax({
+                    url: '/Home/GetSports/',
+                    contentType: 'application/json'
+                }).done(function (data) {
+                    console.log(data);
+                    feedHub.client.updateFeed(data);
+                })
             });
         })
+    </script>
+    <script type="text/template" id="feedTemplate">
+        {{#Sports}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{Name}}
+            </div>
+            <div class="panel-body">
+                {{#Events}}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        League: <strong>{{Name}}</strong>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <th>Start</th>
+                                <th>Match</th>
+                                <th>Winner Odds</th>
+                            </tr>
+                            {{#Matches}}
+                            <tr>
+                                <td>{{ StartDateFormatted }}</td>
+                                <td><a href="/Match/Index/{{Id}}">{{Name}}</a></td>
+                                <td>
+                                    {{#Bets}}
+                                    {{#Odds}}
+                                        {{Name}} - {{Value}} <br/>
+                                    {{/Odds}}
+                                    {{/Bets}}
+                                </td>
+                            </tr>
+                            {{/Matches}}
+                        </table>
+                    </div>
+                </div>
+                {{/Events}}
+            </div>
+        </div>
+        {{/Sports}}
     </script>
 }
 

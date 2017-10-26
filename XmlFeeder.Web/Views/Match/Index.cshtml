@@ -1,0 +1,13 @@
+﻿@model XmlFeeder.Services.Models.MatchModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.StartDateFormatted) (@Html.DisplayFor(model => model.MatchType))</h4>
+
+    @Html.DisplayFor(x => x.Bets)
+</div>
