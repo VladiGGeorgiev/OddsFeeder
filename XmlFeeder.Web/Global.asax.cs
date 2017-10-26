@@ -19,8 +19,3 @@
         }
     }
 }
-
-// 1. Create DB on app start
-// 2. Should I display all of the information in the database, or only matches.
-// 3. I can add templating engine in JavaScript for better quality.
-// 4. Move xml deserialization in class
