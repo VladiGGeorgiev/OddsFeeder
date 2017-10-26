@@ -53,11 +53,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMapper.cs" />
+    <Compile Include="IMatchesService.cs" />
     <Compile Include="ISportsDataPopulationService.cs" />
+    <Compile Include="ISportsService.cs" />
     <Compile Include="IXmlFeederRequester.cs" />
     <Compile Include="IXmlToObjectsTransofmer.cs" />
     <Compile Include="Mapper.cs" />
+    <Compile Include="MatchesService.cs" />
+    <Compile Include="Models\BetModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
+    <Compile Include="Models\MatchModel.cs" />
+    <Compile Include="Models\OddModel.cs" />
+    <Compile Include="Models\SportsModel.cs" />
+    <Compile Include="Models\SportModel.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
+    <Compile Include="SportsService.cs" />
     <Compile Include="XmlModels\Bet.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="XmlModels\Event.cs" />

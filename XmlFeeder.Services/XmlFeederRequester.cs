@@ -4,12 +4,13 @@
     using RestSharp;
     using RestSharp.Deserializers;
     using System.IO;
+    using System.Xml;
     using System.Xml.Serialization;
     using XmlFeeder.Services.Models;
 
     public class XmlFeederRequester : IXmlFeederRequester
     {
-        public XmlSports GetFeed()
+        public string GetFeed()
         {
             // int? days, string date, int? sportID, string lang, bool? isLive
             var client = new RestClient("https://vitalbet.net/sportxml/index");
@@ -19,13 +20,9 @@
             request.RequestFormat = DataFormat.Xml;
             request.OnBeforeDeserialization = resp => { resp.ContentType = "application/xml"; };
 
-            IRestResponse<XmlSports> response = client.Execute<XmlSports>(request);
+            IRestResponse response = client.Execute(request);
             
-            //XmlSerializer serializer = new XmlSerializer(typeof(XmlSports));
-            //StringReader stringReader = new StringReader(response.Content);
-            //var result = (XmlSports)serializer.Deserialize(stringReader);
-
-            return response.Data;
+            return response.Content;
         }
     }
 }

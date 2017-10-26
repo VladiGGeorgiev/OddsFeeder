@@ -8,6 +8,6 @@
         ///     Get sports feed from the VitalBet
         /// </summary>
         /// <returns>Xml sports feed from VitalBet</returns>
-        XmlSports GetFeed();
+        string GetFeed();
     }
 }
