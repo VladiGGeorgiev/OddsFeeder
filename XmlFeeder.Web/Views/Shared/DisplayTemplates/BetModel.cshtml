@@ -1,0 +1,22 @@
+﻿@model XmlFeeder.Services.Models.BetModel
+
+<div>
+    <h3>@Html.DisplayFor(x => x.Name)</h3>
+    <div class="container">
+        <div class="row">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Bet</th>
+                    <th>Value</th>
+                </tr>
+                @foreach (var odd in Model.Odds)
+                {
+                    <tr>
+                        <td>@odd.Name @odd.SpecialBetValue</td>
+                        <td>@odd.Value</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

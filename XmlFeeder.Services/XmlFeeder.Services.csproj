@@ -53,13 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMapper.cs" />
-    <Compile Include="IMatchesService.cs" />
-    <Compile Include="ISportsDataPopulationService.cs" />
-    <Compile Include="ISportsService.cs" />
-    <Compile Include="IXmlFeederRequester.cs" />
-    <Compile Include="IXmlToObjectsTransofmer.cs" />
+    <Compile Include="DataServices\IMatchesService.cs" />
+    <Compile Include="DataServices\ISportsDataPopulationService.cs" />
+    <Compile Include="DataServices\ISportsService.cs" />
+    <Compile Include="FeedServices\IXmlFeederRequester.cs" />
+    <Compile Include="FeedServices\IXmlFeederSerializer.cs" />
     <Compile Include="Mapper.cs" />
-    <Compile Include="MatchesService.cs" />
+    <Compile Include="DataServices\MatchesService.cs" />
     <Compile Include="Models\BetModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Models\SportsModel.cs" />
     <Compile Include="Models\SportModel.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
-    <Compile Include="SportsService.cs" />
+    <Compile Include="DataServices\SportsService.cs" />
     <Compile Include="XmlModels\Bet.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="XmlModels\Event.cs" />
@@ -75,10 +75,10 @@
     <Compile Include="XmlModels\Odd.cs" />
     <Compile Include="XmlModels\XmlSports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SportsDataPopulationService.cs" />
-    <Compile Include="XmlFeederRequester.cs" />
+    <Compile Include="DataServices\SportsDataPopulationService.cs" />
+    <Compile Include="FeedServices\XmlFeederRequester.cs" />
     <Compile Include="XmlModels\Sport.cs" />
-    <Compile Include="XmlToObjectsTransformer.cs" />
+    <Compile Include="FeedServices\XmlFeederSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -93,5 +93,6 @@
       <Name>XmlFeeder.Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

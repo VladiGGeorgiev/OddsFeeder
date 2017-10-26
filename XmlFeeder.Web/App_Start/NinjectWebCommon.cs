@@ -84,15 +84,17 @@ namespace XmlFeeder.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            // Services
-            kernel.Bind<IXmlFeederRequester>().To<XmlFeederRequester>();
             kernel.Bind<IXmlFeederContext>().To<XmlFeederContext>();
-            kernel.Bind<IMapper>().To<Mapper>();
-            kernel.Bind<ISportsService>().To<SportsService>();
-            kernel.Bind<IMatchesService>().To<MatchesService>();
-
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
 
+            // Services
+            kernel.Bind<IXmlFeederRequester>().To<XmlFeederRequester>();
+            kernel.Bind<IXmlFeederSerializer>().To<XmlFeederSerializer>();
+
+            kernel.Bind<IMapper>().To<Mapper>();
+
+            kernel.Bind<ISportsService>().To<SportsService>();
+            kernel.Bind<IMatchesService>().To<MatchesService>();
             kernel.Bind<ISportsDataPopulationService>().To<SportsDataPopulationService>();
         }        
     }
