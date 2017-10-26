@@ -86,11 +86,11 @@ namespace XmlFeeder.Web.App_Start
         {
             // Services
             kernel.Bind<IXmlFeederRequester>().To<XmlFeederRequester>();
-            kernel.Bind<ISportsRepository>().To<SportsRepository>();
-            kernel.Bind<IMatchesRepository>().To<MatchesRepository>();
             kernel.Bind<IXmlFeederContext>().To<XmlFeederContext>();
             kernel.Bind<IMapper>().To<Mapper>();
-            
+            kernel.Bind<ISportsService>().To<SportsService>();
+            kernel.Bind<IMatchesService>().To<MatchesService>();
+
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
 
             kernel.Bind<ISportsDataPopulationService>().To<SportsDataPopulationService>();
